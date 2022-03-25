@@ -189,3 +189,6 @@ Function RuleThresholdText($triggerOperator, $triggerThreshold) {
     }
     return $returnText
 }
+
+#Comment out if you want to just use the Az_Utility Module to call this function
+Export-AzSentinelAnalyticsRuleTemplates
