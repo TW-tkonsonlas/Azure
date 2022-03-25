@@ -68,7 +68,6 @@ Function Export-AzSentinelAnalyticsRuleTemplates {
         $description = $result.properties.Description
         #Replace any double quotes.  Commas are already taken care of
         $description = $description -replace '"', '""'
-        #TODO-tk replace '(Preview) ' in the Alerts to standardize them
 
         #Generate the list of data connectors.  Using the pipe as the 
         #delimiter since it does not appear in any data connector name
@@ -105,6 +104,7 @@ Function Export-AzSentinelAnalyticsRuleTemplates {
         #Create and output the line of information.
         $severity = $result.properties.severity
 		$displayName = $result.properties.displayName
+        $displayName = $displayName -replace '\(Preview\) ',''#Remove the (Preview) so the displayname is more standardized
 		$kind = $result.kind
 		$name = $result.Name
         $version = $result.properties.anomalyDefinitionVersion
