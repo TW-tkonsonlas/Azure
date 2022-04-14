@@ -7,7 +7,7 @@
             Connect-AzAccount -Tenant '00000aaa-00aa-0000-aa00-aaa00000aaaa' -Subscription '0000aaa0-aa00-00aa-aaaa-000aaa000aa0'
         Currently drops the output CSV in the directory the script is ran from
     .ERRORS
-        Currently there is an error with the scrip pulling the '
+
     .SYNOPSIS
         This command will generate a CSV file containing the information about all the Azure Sentinel
         Analytic rules templates.
@@ -38,8 +38,10 @@
 
 Function Export-AzSentinelAnalyticsRuleTemplates {
     param (
-        [Parameter(Mandatory = $true)]  [string]$WorkSpaceName,
-        [Parameter(Mandatory = $true)]  [string]$ResourceGroupName,
+        #flip to true, comment out default 
+        [Parameter(Mandatory = $false)]  [string]$WorkSpaceName = "3PSIEM",
+        #flip to true, comment out default
+        [Parameter(Mandatory = $false)]  [string]$ResourceGroupName = "danh2",
         [Parameter(Mandatory = $false)] [string]$FileName = "Sentinel_RuleTemplates.csv" #default
     )
 
@@ -111,19 +113,21 @@ Function Export-AzSentinelAnalyticsRuleTemplates {
         $status = $result.properties.status
 
 		[pscustomobject]@{ 
-            'Selected' = " ";
-            'Severity' = $severity;
+            'Selected' = "";
+            'TW-Name' = "";
+            'TW-Criticality' = "";
+            'ID' = $name;
+            'MSSeverity' = $severity;
             'DisplayName' = $displayName;
             'Kind' = $kind;
-            'Name' = $name;
             'Description' = $description;
             'Tactics' = $tactics;
             'RequiredDataConnectors' = $requiredDataConnectors;
             'RuleFrequency' = $frequencyText;
-            'RulePeriod' = $queryText;
             'RuleFrequency2' = $frequencyText2; #Catch for some Rule frequencies that don't follow the first
+            'RulePeriod' = $queryText;
             'RuleThreshold' = $ruleThresholdText;
-            'Version' = $version; #Fixed to reflect version if available
+            #'Version' = $version;
             'Status' = $status #Easy way to see which templates are already installed
         } | Export-Csv $filename -Append -NoTypeInformation
     }
